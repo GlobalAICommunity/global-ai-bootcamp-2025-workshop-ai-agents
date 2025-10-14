@@ -1,0 +1,21 @@
+[project]
+name = "global-ai-bootcamp-2025-workshop-ai-agents"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp>=3.13.0",
+    "aiosqlite>=0.21.0",
+    "azure-ai-agents>=1.1.0",
+    "azure-ai-projects>=1.0.0",
+    "azure-identity>=1.25.1",
+    "azure-monitor-opentelemetry>=1.8.1",
+    "httpx>=0.28.1",
+    "icecream>=2.1.8",
+    "opentelemetry-sdk>=1.37.0",
+    "pandas>=2.3.3",
+    "pillow>=11.3.0",
+    "pydantic>=2.12.1",
+    "python-dotenv>=1.1.1",
+]

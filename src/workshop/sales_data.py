@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+from pathlib import Path
 from typing import Optional, Coroutine
 
 import aiosqlite
@@ -21,13 +22,23 @@ class SalesData:
         self.conn = None
 
     async def connect(self: "SalesData") -> None:
-        env = os.getenv("ENVIRONMENT", "local")
-        db_uri = f"file:{'src/workshop/' if env == 'container' else ''}{DATA_BASE}?mode=ro"
-
         try:
+            # Resolve DB path relative to this file to avoid CWD issues
+            base_dir = Path(__file__).resolve().parent
+            db_path = (base_dir / DATA_BASE).resolve()
+
+            if not db_path.exists():
+                raise FileNotFoundError(f"SQLite database not found at: {db_path}")
+
+            # Use a file URI with forward slashes for cross-platform correctness
+            db_uri = f"file:{db_path.as_posix()}?mode=ro"
+
             self.conn = await aiosqlite.connect(db_uri, uri=True)
             logger.debug("Database connection opened.")
         except aiosqlite.Error as e:
+            logger.exception("An error occurred", exc_info=e)
+            self.conn = None
+        except Exception as e:
             logger.exception("An error occurred", exc_info=e)
             self.conn = None
 

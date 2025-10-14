@@ -1,7 +1,8 @@
+import logging
 from typing import Any
 
 from azure.ai.projects.aio import AIProjectClient
-from azure.ai.projects.models import (
+from azure.ai.agents.models import (
     AsyncAgentEventHandler,
     AsyncFunctionTool,
     MessageDeltaChunk,
@@ -14,6 +15,8 @@ from azure.ai.projects.models import (
 )
 
 from utilities import Utilities
+
+logger = logging.getLogger(__name__)
 
 
 class StreamEventHandler(AsyncAgentEventHandler[str]):
@@ -44,6 +47,8 @@ class StreamEventHandler(AsyncAgentEventHandler[str]):
 
         if run.status == "failed":
             print(f"Run failed. Error: {run.last_error}")
+        
+        # Function calls are now handled automatically by enable_auto_function_calls
 
     async def on_run_step(self, step: RunStep) -> None:
         pass
